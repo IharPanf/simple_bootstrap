@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="css/bootstrap.css" rel="stylesheet">
+	<style>
+		.container .row{
+			margin-top:10px;
+			border:1px solid grey;
+			padding:10px;
+		}
+		.row div {
+			margin: 10px 0 10px 0;
+			border-bottom:1px solid grey;
+			padding:20px;
+		}
+		input[type="text"] {
+			margin:0;
+		}
+		input[type="radio"] {
+			margin-left:20px;
+		}
+		strong:hover {
+			cursor:pointer;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+    <div class="row first">
+	  <div>
+		<h2 class="text-success">Работа с bootstrap-tooltip.js (выплывающие подсказки)</h2>
+		<h3 class="text-info">Расположение:</h3>
+		<input type="radio" name="groupPosition" value="top" checked>  Top
+		<input type="radio" name="groupPosition" value="right">  Right
+		<input type="radio" name="groupPosition" value="bottom">  Bottom
+		<input type="radio" name="groupPosition" value="left">  Left
+		<h3 class="text-info">Текст для первой подсказки:</h3>
+		<input type="text" placeholder="текст подказки" class="input-xlarge">
+		<button class="btn btn-primary">Применить</button>
+	  </div>
+      <p>Bootstrap is the most popular <strong rel="tooltip" title="HTML"  data-position='top' id="firstSentence">HTML</strong>, 
+			<strong rel="tooltip" title="CSS"  data-position='top'>CSS</strong>, and 
+			<strong rel="tooltip" title="JS framework"  data-position='top'>JS framework</strong> for developing responsive, mobile first projects on the web.
+	  </p>
+    </div>
+	<div class='row second'>
+		<div>
+			<h2 class="text-success">Работа с bootstrap-popover.js (выплывающие блоки подсказок)</h2>
+			<h3 class="text-info">Расположение:</h3>
+			<input type="radio" name="groupPosition2" value="top" checked>  Top
+			<input type="radio" name="groupPosition2" value="right">  Right
+			<input type="radio" name="groupPosition2" value="bottom">  Bottom
+			<input type="radio" name="groupPosition2" value="left">  Left
+			<h3 class="text-info">Заголовок для первой подсказки:</h3>
+			<input type="text" placeholder="текст подказки" class="input-xlarge idCaption">
+			<h3 class="text-info">Текст для первой подсказки:</h3>
+			<input type="text" placeholder="текст подказки" class="input-xlarge idText">
+			<button class="btn btn-success">Применить</button>
+		</div>
+		<p>D3.js is a JavaScript library for manipulating documents based on data. D3 helps you bring data to life using 
+			<strong rel="tooltip" data-title="HTML" data-content="HTML - это язык разметки" id="secondSentence">HTML</strong>, 
+			<strong rel="tooltip" data-title="SVG" data-content="SVG -  является языком разметки расширенным из XML для описания двухмерной векторной графики">SVG</strong>, and 
+			<strong rel="tooltip" data-title="CSS" data-content="CSS - это то, как HTML представлен">CSS</strong>.  tooltips2</strong>
+		</p>
+	</div>
+</div>	
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-tooltip.js"></script>
+<script src="js/bootstrap-popover.js"></script>
+<script>
+	$(document).ready(function() {
+			$('.first p').tooltip({
+							selector: 'strong', 
+							placement: $(this).find('strong').attr('data-position')
+			});
+			$('.second p').popover({
+							placement:  'right',
+							selector: 'strong',
+							title: 'title',
+							content: $(this).find('.second p strong').text()
+			});
+			$('.first div .btn').bind('click',clickFirstBtn);
+			$('.second div .btn').bind('click',clickSecondBtn);
+	});
+	
+	function clickFirstBtn() {
+		var textHint = $('.first div .input-xlarge').val();
+		var newElemPosition;
+		var elem = $('.first div input[type="radio"]');
+		
+		for (var i = 0; i < elem.length; i++) {
+			if ($(elem[i]).is(":checked")) {
+				newElemPosition = $(elem[i]).val(); 
+			}
+		}
+		$('#firstSentence').tooltip('hide');
+		if (textHint != '') {
+			$('#firstSentence').attr('data-original-title',textHint);
+		}
+		$('#firstSentence').data('tooltip').options.placement = newElemPosition;
+		$('#firstSentence').tooltip('show');
+	}	
+	
+	function clickSecondBtn() {
+		var textCaption = $('.second div .idCaption').val();
+		var textHint = $('.second div .idText').val();
+
+		var newElemPosition;
+		var elem = $('.second div input[type="radio"]');
+		
+		for (var i = 0; i < elem.length; i++) {
+			if ($(elem[i]).is(":checked")) {
+				newElemPosition = $(elem[i]).val(); 
+			}
+		}
+		
+		$('#secondSentence').popover('hide');
+		$('#secondSentence').data('popover').options.placement = newElemPosition;
+		
+		if (textHint != '') {		
+			$('#secondSentence').attr('data-content',textHint);
+		}
+		if (textCaption != '') {	
+			$('#secondSentence').data('popover').options.title = textCaption;
+		}
+		
+		$('#secondSentence').popover('show');
+	}
+</script>
+</body>
+</html>
