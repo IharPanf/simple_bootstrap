@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link href="css/bootstrap.css" rel="stylesheet">
+	<style>
+		.container {
+			margin-top:20px;
+		}
+		.row {
+			margin-bottom:20px;
+		}
+		.noactive {
+			display:none;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="row">
+		<fieldset class="control-group success">
+			<label class="control-label" for="input01">Задержка перед скрытием сообщения(сек.)</label>
+			<div class="controls">
+				<input type="text" class="input-xlarge" id="input01" value='3'>
+				<p class="help-block">Какой-то дополнительный текст</p>
+			</div>
+		</fieldset>
+		<fieldset class="control-group info">
+			<label class="control-label" for="input02">Текст сообщения</label>
+			<div class="controls">
+				<input type="text" class="input-xlarge" id="input02" value='Text for message'>
+				<p class="help-block">Какой-то дополнительный текст</p>
+			</div>
+		</fieldset>
+	</div>
+	<div class="row">
+		<div class="btn-group" data-toggle="buttons-radio">
+			<button class="btn btn-info">Info</button>
+			<button class="btn btn-success">Success</button>
+			<button class="btn btn-warning">Warning</button>
+			<button class="btn btn-danger">Danger</button>
+		</div>
+	</div>
+	<div class="alert alert-warning noactive template">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+		<strong>Message:</strong> <span id="txt">Text for message</span>
+	</div>
+</div>	
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-button.js"></script>
+<script>
+	$('.btn').bind('click',showMessage);
+	
+	function showMessage() {
+		var showLongMessage = $('#input01').val();
+		var textMessage = $('#input02').val();
+		var typeMessage = $(this).attr('class');
+		typeMessage = typeMessage.split('-')[1];
+		var elemMessage = $('.template').clone();
+		elemMessage.removeClass('alert-warning').addClass('alert-' + typeMessage);
+		elemMessage.find('#txt').text(textMessage)
+		elemMessage.removeClass('noactive template').appendTo('.container')
+		if(showLongMessage) {
+			elemMessage.fadeOut((function() {return showLongMessage * 1000})());
+		} 
+	}
+</script>
+</body>
+</html>
